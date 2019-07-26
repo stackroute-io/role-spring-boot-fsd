@@ -1,4 +1,4 @@
-stackroute.spring-boot-fsd
+sagarpatke.role_spring_boot_fsd
 =========
 
 A role to install necessary tools for Spring Boot Full Stack Development.
@@ -56,7 +56,7 @@ Example Playbook
 - hosts: all
   become: true
   roles:
-    - role: stackroute.spring-boot-fsd
+    - role: sagarpatke.role_spring_boot_fsd
 ```
 
 
@@ -68,4 +68,4 @@ MIT
 Author Information
 ------------------
 
-- [Sagar Patke](https://github.com/sagarpatkeatl), [StackRoute](http://stackroute.in)
+- [Sagar Patke](https://github.com/sagarpatkeatl)
