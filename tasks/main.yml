@@ -45,6 +45,8 @@
     - mysql
     - docker
     - mongod
+  tags:
+    - machine-only
 - name: Download STS4
   get_url:
     url: https://download.springsource.com/release/STS4/4.3.1.RELEASE/dist/e4.12/spring-tool-suite-4-4.3.1.RELEASE-e4.12.0-linux.gtk.x86_64.tar.gz
