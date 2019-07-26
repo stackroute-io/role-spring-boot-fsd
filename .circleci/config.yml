@@ -1,0 +1,11 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: stackrouteio/ansible:ubuntu1604
+
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: ansible-galaxy install -r tests/roles.yml -p roles

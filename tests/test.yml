@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  become: yes
+  roles:
+    - stackroute.vlab-template-java-cloudnative-fsd
