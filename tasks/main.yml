@@ -5,7 +5,7 @@
 - name: install dev utilities
   package:
     name: "{{ item }}"
-    state: latest
+    state: present
   loop:
     - git
     - vim
