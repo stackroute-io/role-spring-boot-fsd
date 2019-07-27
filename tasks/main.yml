@@ -30,7 +30,6 @@
   copy:
     src: daemon.json
     dest: /etc/docker/daemon.json
-  notify: Reload docker daemon
 - name: Add vagrant user to docker group
   user:
     name: vagrant
@@ -116,9 +115,6 @@
     - kubeadm
     - kubelet
     - kubectl
-  notify:
-    - Disable Swap
-    - Remove swap from fstab
 - name: Download helm
   get_url:
     url: https://get.helm.sh/helm-v2.14.2-linux-amd64.tar.gz
