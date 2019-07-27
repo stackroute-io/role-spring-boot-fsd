@@ -113,6 +113,10 @@
   copy:
     src: sts.desktop
     dest: /usr/share/applications/sts.desktop
+- name: Ensure /etc/docker directory exists
+  file:
+    path: /etc/docker
+    state: directory
 - name: Docker daemon configuration
   copy:
     src: daemon.json
