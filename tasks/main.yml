@@ -22,6 +22,83 @@
     - maven
     - mysql-server
     - mysql-workbench
+- name: Ensure /etc/docker directory exists
+  file:
+    path: /etc/docker
+    state: directory
+- name: Docker daemon configuration
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+  notify: Reload docker daemon
+- name: Add vagrant user to docker group
+  user:
+    name: vagrant
+    groups:
+      - docker
+    append: yes
+    state: present
+- name: Add MongoDB Key
+  apt_key:
+    keyserver: hkp://keyserver.ubuntu.com:80
+    id: 9DA31620334BD75D9DCB49F368818C72E52529D4
+    state: present
+- name: Add MongoDB Repository
+  apt_repository:
+    repo: deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.0 multiverse
+    filename: mongodb-org
+    state: present
+    update_cache: yes
+- name: Install MongoDB
+  package:
+    name: mongodb-org
+- name: Stop services
+  service:
+    name: "{{ item }}"
+    daemon_reload: yes
+    state: stopped
+    enabled: no
+  loop:
+    - mysql
+    - docker
+    - mongod
+  tags:
+    - machine-only
+- name: Disable Swap
+  shell: |
+    swapoff -a
+  tags:
+    - machine-only
+- name: Remove swap from fstab
+  replace:
+    path: /etc/fstab
+    regexp: '^(.+?\sswap\s+sw\s+.*)$'
+    replace: '# \1'
+  tags:
+    - machine-only
+- name: Download STS4
+  get_url:
+    url: https://download.springsource.com/release/STS4/4.3.1.RELEASE/dist/e4.12/spring-tool-suite-4-4.3.1.RELEASE-e4.12.0-linux.gtk.x86_64.tar.gz
+    dest: /opt/sts.tar.gz
+    checksum: sha256:a34c1fa01391fe11318385148ad27b0db27185866440fa9f1f75cc0a06a10a77
+- name: Create /opt/sts directory
+  file:
+    path: /opt/sts
+    state: directory
+- name: Extract STS4
+  unarchive:
+    src: /opt/sts.tar.gz
+    dest: /opt/sts
+    remote_src: yes
+- name: Create symlink in path
+  file:
+    path: /usr/local/bin/sts
+    state: link
+    src: /opt/sts/sts-4.3.1.RELEASE/SpringToolSuite4
+- name: Create desktop entry
+  copy:
+    src: sts.desktop
+    dest: /usr/share/applications/sts.desktop
 - name: Install Kubernetes APT key
   apt_key:
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
@@ -64,68 +141,3 @@
   loop:
     - helm
     - tiller
-- name: Add MongoDB Key
-  apt_key:
-    keyserver: hkp://keyserver.ubuntu.com:80
-    id: 9DA31620334BD75D9DCB49F368818C72E52529D4
-    state: present
-- name: Add MongoDB Repository
-  apt_repository:
-    repo: deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.0 multiverse
-    filename: mongodb-org
-    state: present
-    update_cache: yes
-- name: Install MongoDB
-  package:
-    name: mongodb-org
-- name: Stop services
-  service:
-    name: "{{ item }}"
-    daemon_reload: yes
-    state: stopped
-    enabled: no
-  loop:
-    - mysql
-    - docker
-    - mongod
-  tags:
-    - machine-only
-- name: Download STS4
-  get_url:
-    url: https://download.springsource.com/release/STS4/4.3.1.RELEASE/dist/e4.12/spring-tool-suite-4-4.3.1.RELEASE-e4.12.0-linux.gtk.x86_64.tar.gz
-    dest: /opt/sts.tar.gz
-    checksum: sha256:a34c1fa01391fe11318385148ad27b0db27185866440fa9f1f75cc0a06a10a77
-- name: Create /opt/sts directory
-  file:
-    path: /opt/sts
-    state: directory
-- name: Extract STS4
-  unarchive:
-    src: /opt/sts.tar.gz
-    dest: /opt/sts
-    remote_src: yes
-- name: Create symlink in path
-  file:
-    path: /usr/local/bin/sts
-    state: link
-    src: /opt/sts/sts-4.3.1.RELEASE/SpringToolSuite4
-- name: Create desktop entry
-  copy:
-    src: sts.desktop
-    dest: /usr/share/applications/sts.desktop
-- name: Ensure /etc/docker directory exists
-  file:
-    path: /etc/docker
-    state: directory
-- name: Docker daemon configuration
-  copy:
-    src: daemon.json
-    dest: /etc/docker/daemon.json
-  notify: Reload docker daemon
-- name: Add vagrant user to docker group
-  user:
-    name: vagrant
-    groups:
-      - docker
-    append: yes
-    state: present
