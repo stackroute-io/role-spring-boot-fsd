@@ -22,6 +22,26 @@
     - maven
     - mysql-server
     - mysql-workbench
+- name: Install Kubernetes APT key
+  apt_key:
+    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+- name: Add k8s repository
+  apt_repository:
+    repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+    state: present
+    update_cache: yes
+- name: Install Dependencies
+  package:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - kubeadm
+    - kubelet
+    - kubectl
+  notify:
+    - Disable Swap
+    - Remove swap from fstab
 - name: Add MongoDB Key
   apt_key:
     keyserver: hkp://keyserver.ubuntu.com:80
@@ -39,6 +59,7 @@
 - name: Stop services
   service:
     name: "{{ item }}"
+    daemon_reload: yes
     state: stopped
     enabled: no
   loop:
@@ -66,7 +87,19 @@
     path: /usr/local/bin/sts
     state: link
     src: /opt/sts/sts-4.3.1.RELEASE/SpringToolSuite4
-- name: Create .desktop entry
+- name: Create desktop entry
   copy:
     src: sts.desktop
     dest: /usr/share/applications/sts.desktop
+- name: Docker daemon configuration
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+  notify: Reload docker daemon
+- name: Add vagrant user to docker group
+  user:
+    name: vagrant
+    groups:
+      - docker
+    append: yes
+    state: present

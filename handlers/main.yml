@@ -1,2 +1,15 @@
 ---
 # handlers file for stackroute.vlab-template-java-cloudnative-fsd
+- name: Reload docker daemon
+  systemd:
+    name: docker
+    daemon_reload: yes
+    state: stopped
+- name: Disable Swap
+  shell: |
+    swapoff -a
+- name: Remove swap from fstab
+  replace:
+    path: /etc/fstab
+    regexp: '^(.+?\sswap\s+sw\s+.*)$'
+    replace: '# \1'
