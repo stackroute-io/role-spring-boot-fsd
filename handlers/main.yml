@@ -5,11 +5,17 @@
     name: docker
     daemon_reload: yes
     state: stopped
+  tags:
+    - machine-only
 - name: Disable Swap
   shell: |
     swapoff -a
+  tags:
+    - machine-only
 - name: Remove swap from fstab
   replace:
     path: /etc/fstab
     regexp: '^(.+?\sswap\s+sw\s+.*)$'
     replace: '# \1'
+  tags:
+    - machine-only
