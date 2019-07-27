@@ -42,6 +42,28 @@
   notify:
     - Disable Swap
     - Remove swap from fstab
+- name: Download helm
+  get_url:
+    url: https://get.helm.sh/helm-v2.14.2-linux-amd64.tar.gz
+    dest: /opt/helm.tar.gz
+    checksum: sha256:9f50e69cf5cfa7268b28686728ad0227507a169e52bf59c99ada872ddd9679f0
+- name: Create /opt/helm folder
+  file:
+    path: /opt/helm
+    state: directory
+- name: Unarchive helm
+  unarchive:
+    src: /opt/helm.tar.gz
+    dest: /opt/helm
+    remote_src: yes
+- name: Add helm and tiller to path
+  file:
+    path: "/usr/local/bin/{{item}}"
+    state: link
+    src: "/opt/helm/linux-amd64/{{item}}"
+  loop:
+    - helm
+    - tiller
 - name: Add MongoDB Key
   apt_key:
     keyserver: hkp://keyserver.ubuntu.com:80
