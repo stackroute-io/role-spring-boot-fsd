@@ -42,6 +42,7 @@ galaxy_info:
     - name: Ubuntu
       versions:
         - xenial
+        - bionic
 
   galaxy_tags:
     - springboot
@@ -65,7 +66,6 @@ dependencies:
   - ngetchell.vscode
   - cmprescott.chrome
   - arknoll.firefox
-  - wtanaka.slack
   - role: geerlingguy.docker
     docker_users:
       - ubuntu

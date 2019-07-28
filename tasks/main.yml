@@ -1,5 +1,12 @@
 ---
 # tasks file for stackroute.vlab-template-java-cloudnative-fsd
+- name: Update APT Cache
+  apt:
+    update_cache: yes
+- name: Install slack
+  apt:
+    deb: https://downloads.slack-edge.com/linux_releases/slack-desktop-{{slack_version}}-amd64.deb
+    state: present
 - name: installing repo for Java 8 in Ubuntu
   apt_repository: repo="ppa:openjdk-r/ppa"
 - name: install dev utilities
@@ -44,7 +51,7 @@
     state: present
 - name: Add MongoDB Repository
   apt_repository:
-    repo: deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/4.0 multiverse
+    repo: deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu {{ansible_lsb.codename}}/mongodb-org/4.0 multiverse
     filename: mongodb-org
     state: present
     update_cache: yes

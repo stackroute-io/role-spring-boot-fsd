@@ -30,7 +30,10 @@ User `ubuntu` must be present before running this script.
 Role Variables
 --------------
 
-None
+```
+slack_version: "4.0.0"
+```
+Specifies the version of slack to install
 
 Dependencies
 ------------
@@ -43,7 +46,6 @@ Dependencies
 - ngetchell.vscode
 - cmprescott.chrome
 - arknoll.firefox
-- wtanaka.slack
 - role: geerlingguy.docker
   docker_users:
     - ubuntu
