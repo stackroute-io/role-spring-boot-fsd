@@ -73,5 +73,8 @@ dependencies:
       docker_editiion: ce
       docker_version: 18.06.2~ce~3-0~ubuntu
       docker_package: "docker-{{docker_edition}}={{docker_version}}"
+      docker_service_state: stopped
+      docker_service_enabled: false
+      docker_restart_handler_state: stopped
   # List your role dependencies here, one per line. Be sure to remove the '[]' above,
   # if you add dependencies to this list.
