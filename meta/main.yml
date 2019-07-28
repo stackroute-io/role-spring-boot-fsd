@@ -72,7 +72,7 @@ dependencies:
     vars:
       docker_editiion: ce
       docker_version: 18.06.2~ce~3-0~ubuntu
-      docker_package: "docker-{{docker_edition}}={{docker_version}}"
+      docker_package: "docker-{{ docker_edition }}={{ docker_version }}"
       docker_service_state: stopped
       docker_service_enabled: false
       docker_restart_handler_state: stopped

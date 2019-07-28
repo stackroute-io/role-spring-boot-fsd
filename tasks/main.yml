@@ -5,7 +5,7 @@
     update_cache: yes
 - name: Install slack
   apt:
-    deb: https://downloads.slack-edge.com/linux_releases/slack-desktop-{{slack_version}}-amd64.deb
+    deb: https://downloads.slack-edge.com/linux_releases/slack-desktop-{{ slack_version }}-amd64.deb
     state: present
 - name: installing repo for Java 8 in Ubuntu
   apt_repository: repo="ppa:openjdk-r/ppa"
@@ -51,7 +51,7 @@
     state: present
 - name: Add MongoDB Repository
   apt_repository:
-    repo: deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu {{ansible_lsb.codename}}/mongodb-org/4.0 multiverse
+    repo: deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu {{ ansible_lsb.codename }}/mongodb-org/4.0 multiverse
     filename: mongodb-org
     state: present
     update_cache: yes
@@ -138,9 +138,9 @@
     remote_src: yes
 - name: Add helm and tiller to path
   file:
-    path: "/usr/local/bin/{{item}}"
+    path: "/usr/local/bin/{{ item }}"
     state: link
-    src: "/opt/helm/linux-amd64/{{item}}"
+    src: "/opt/helm/linux-amd64/{{ item }}"
   loop:
     - helm
     - tiller
