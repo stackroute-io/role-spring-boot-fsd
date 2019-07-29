@@ -29,7 +29,9 @@
     - maven
     - mysql-workbench
 - name: install mysql
-  package: mysql-server
+  package:
+    name: mysql-server
+    state: present
   tags:
     - machine-only
 - name: Ensure /etc/docker directory exists
