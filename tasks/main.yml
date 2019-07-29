@@ -27,8 +27,11 @@
     - openjdk-12-jdk
     - openjdk-12-doc
     - maven
-    - mysql-server
     - mysql-workbench
+- name: install mysql
+  package: mysql-server
+  tags:
+    - machine-only
 - name: Ensure /etc/docker directory exists
   file:
     path: /etc/docker
